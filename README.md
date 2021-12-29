@@ -32,7 +32,11 @@ Users should be able to:
 
 ### Screenshot
 
-![](./screenshot.jpg)
+![screenshot_mobileInterface_home1](https://github.com/Aperlae/star_struck/blob/main/assets/screenshot_mobileInterface_home1.png?raw=true)
+![screenshot_mobileInterface_home2](https://github.com/Aperlae/star_struck/blob/main/assets/screenshot_mobileInterface_home2.png?raw=true)
+![screenshot_tablet_tech](https://github.com/Aperlae/star_struck/blob/main/assets/screenshot_tablet_tech.png?raw=true)
+![screenshot_desktop_destination](https://github.com/Aperlae/star_struck/blob/main/assets/screenshot_desktop_destination.png?raw=true)
+
 
 Add a screenshot of your solution. The easiest way to do this is to use Firefox to view your project, right-click the page and select "Take a Screenshot". You can choose either a full-height screenshot or a cropped one based on how long the page is. If it's very long, it might be best to crop it.
 
