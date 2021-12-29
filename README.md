@@ -1,4 +1,4 @@
-# star_struck *update coming up tomorrow*
+# star_struck
 Space Tourism Multi-page Website Solution - Frontend Mentor Challenge
 
 This is a solution to the [Space tourism website challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/space-tourism-multipage-website-gRWj1URZ3). Frontend Mentor challenges help you improve your coding skills by building realistic projects. 
@@ -18,7 +18,6 @@ This is a solution to the [Space tourism website challenge on Frontend Mentor](h
 - [Author](#author)
 - [Acknowledgments](#acknowledgments)
 
-**Note: Delete this note and update the table of contents based on what sections you keep.**
 
 ## Overview
 
@@ -32,24 +31,21 @@ Users should be able to:
 
 ### Screenshot
 
+#### Mobile
 ![screenshot_mobileInterface_home1](https://github.com/Aperlae/star_struck/blob/main/assets/screenshot_mobileInterface_home1.png?raw=true)
 ![screenshot_mobileInterface_home2](https://github.com/Aperlae/star_struck/blob/main/assets/screenshot_mobileInterface_home2.png?raw=true)
+
+#### Tablet
 ![screenshot_tablet_tech](https://github.com/Aperlae/star_struck/blob/main/assets/screenshot_tablet_tech.png?raw=true)
+
+#### Desktop
 ![screenshot_desktop_destination](https://github.com/Aperlae/star_struck/blob/main/assets/screenshot_desktop_destination.png?raw=true)
 
 
-Add a screenshot of your solution. The easiest way to do this is to use Firefox to view your project, right-click the page and select "Take a Screenshot". You can choose either a full-height screenshot or a cropped one based on how long the page is. If it's very long, it might be best to crop it.
-
-Alternatively, you can use a tool like [FireShot](https://getfireshot.com/) to take the screenshot. FireShot has a free option, so you don't need to purchase it. 
-
-Then crop/optimize/edit your image however you like, add it to your project, and update the file path in the image above.
-
-**Note: Delete this note and the paragraphs above when you add your screenshot. If you prefer not to add a screenshot, feel free to remove this entire section.**
-
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Solution URL: [Frontend Mentor](https://www.frontendmentor.io/solutions/responsive-multipage-website-using-cssgrid-jquery-utility-classes-pPsr8Qk1f)
+- Live Site URL: [Space Tourism Website](http://space-tourism-website-mauve.vercel.app/)
 
 ## My process
 
@@ -60,59 +56,131 @@ Then crop/optimize/edit your image however you like, add it to your project, and
 - Flexbox
 - CSS Grid
 - Mobile-first workflow
-- [React](https://reactjs.org/) - JS library
-- [Next.js](https://nextjs.org/) - React framework
-- [Styled Components](https://styled-components.com/) - For styles
-
-**Note: These are just examples. Delete this note and replace the list above with your own choices**
 
 ### What I learned
 
-Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
+Once again I followed a tutorial to build this site [Kevin Powell / Scrimba](https://scrimba.com/learn/spacetravel).  It was great fun working with utility classes and although I wasn't always capable of completing all challenges, my own research and explanations provided by Kevin were of great help.  I learnt more about syntax and semantics in both HTML and CSS as well as some JQuery on which I still need to work.  I found the explanations on accessibility extremely interesting and I will keep using them going forward. 
 
-To see how you can add code snippets, see below:
 
+I know it's a simple thing, but I really like how neatly this 'Skip to content' works.  I've often found tabbing around pages with screen reading technology a waste of time.  This saves precious minutes and it doesn't mess up the visual design of the page. 
 ```html
-<h1>Some HTML code I'm proud of</h1>
+<a class="skip-to-content" href="#main">Skip to content</a>
 ```
 ```css
-.proud-of-this-css {
-  color: papayawhip;
+.skip-to-content {
+    position: absolute;
+    z-index: 999;
+    margin-inline: auto;
+    background: hsl(var(--clr-white));
+    color: hsl(var(--clr-dark));
+    padding: .5em 1em;
+    transform: translateY(-100%);
+    transition: transform 500ms ease-in;
+}
+.skip-to-content:focus {
+    transform: translateY(0);
 }
 ```
+
+Here's one other piece of code that will be included in my pages from now on. **Bootstrap class sr-only** used to hide information that is only intended for screen-readers.
+```html
+<button class="mobile-nav-toggle" aria-controls="primary-navigation">
+   <span class="sr-only" aria-expanded="false">Menu</span></button>         
+```
+```css
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap; /* added line */
+    border: 0;
+}
+```
+
+This **backdrop-filter** style looks absolutely lush although not supported by all browsers.
+```css
+.primary-navigation {
+-webkit-backdrop-filter: blur(1.5rem);
+backdrop-filter: blur(1.5rem);
+}
+/* Here's an easy fix example for those browsers that don't support it */
+@supports not ((-webkit-backdrop-filter: blur(1.5em)) or 
+(backdrop-filter: blur(1.5em))) {
+    .primary-navigation {
+        background: hsl(var(--clr-dark) / .85);
+    }
+}
+```
+
+Here's a function to help with **keyboard navigation** starting with changing focus on the tabs using the right and left arrow keys.
+
 ```js
-const proudOfThisFunc = () => {
-  console.log('🎉')
+const tabList = document.querySelector('[role="tablist"]');
+const tabs = tabList.querySelectorAll('[role="tab"]');
+
+tabList.addEventListener('keydown', changeTabFocus);
+
+let tabFocus = 0;
+function changeTabFocus(event) {
+    const keydownLeft = 37;
+    const keydownRight = 39;
+// changing tabindex of current tab to -1 //
+    if (event.keyCode === keydownLeft || event.keyCode === keydownRight) { 
+        tabs[tabFocus].setAttribute("tabindex", -1); //removes focus when keydown takes place//
+// if right key is pushed, move tab to right //        
+        if (event.keyCode === keydownRight) {
+            tabFocus++;
+            if (tabFocus >= tabs.length) { //cycles through the tabs with right key//
+                tabFocus = 0;
+            }
+// if left key is pushed, move tab to left // 
+        } else if (event.keyCode === keydownLeft) {
+           tabFocus--;
+            if (tabFocus < 0) { //cycles through the tabs with left key//
+                tabFocus = tabs.length - 1;
+            }
+        }
+        tabs[tabFocus].setAttribute("tabindex", 0); //puts focus on next tab//
+        tabs[tabFocus].focus();
+    }           
 }
 ```
 
 If you want more help with writing markdown, we'd recommend checking out [The Markdown Guide](https://www.markdownguide.org/) to learn more.
 
-**Note: Delete this note and the content within this section and replace with your own learnings.**
 
 ### Continued development
 
-Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
+I will definately continue focusing on accessibility in future projects.  
+Read more about the use of **ARIA** roles, states and properties.
+Make a habit of writing a general reset and use general utility classes that work with components and custom properties.
+I need more practice with javaScript and JQuery as they're still pretty confusing at times.
 
-**Note: Delete this note and the content within this section and replace with your own plans for continued development.**
 
 ### Useful resources
 
-- [Example resource 1](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
-- [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.
+- [Stackoverflow](https://stackoverflow.com/) - Always find answers here ...
+- [W3Schools](https://www.w3schools.com/default.asp) - And here ...
+- [CSSTricks](https://css-tricks.com/archives/) - here  too ...
+- [MDN Web Docs](https://developer.mozilla.org/en-US/) - yep ...
+- [Piccalill-Andy Bell](https://piccalil.li/blog/a-modern-css-reset/) - This modern CSS reset came in handy and will again for sure.
+- [WebDev](https://web.dev/prefers-reduced-motion/) - An interesting article on reducing animations for users who express this preference.
+- [SmashingMagazine](https://www.smashingmagazine.com/2021/03/complete-guide-accessible-front-end-components/) - Handy guide to have!  
 
-**Note: Delete this note and replace the list above with resources that helped you during the challenge. These could come in handy for anyone viewing your solution or for yourself when you look back on this project in the future.**
+
 
 ## Author
 
-- Website - [Add your name here](https://www.your-site.com)
-- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
-- Twitter - [@yourusername](https://www.twitter.com/yourusername)
+- Frontend Mentor - [@Aperlae](https://www.frontendmentor.io/profile/Aperlae)
+- LinkedIn - [@Monique](https://www.linkedin.com/in/monique-parnis-89902722a/) *new profile under construction* 
 
-**Note: Delete this note and add/remove/edit lines above based on what links you'd like to share.**
 
 ## Acknowledgments
 
-This is where you can give a hat tip to anyone who helped you out on this project. Perhaps you worked in a team or got some inspiration from someone else's solution. This is the perfect place to give them some credit.
+- [Scrimba](https://scrimba.com/allcourses) - Thanks to Per I learned a little bit of JS and with the help of Kevin is finished this challenge.
 
-**Note: Delete this note and edit this section's content as necessary. If you completed this challenge by yourself, feel free to delete this section entirely.**
+
