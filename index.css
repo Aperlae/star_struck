@@ -569,6 +569,7 @@ select {
 
 .grid-container--destination {
     --flow-space: 2rem;
+    height: 100vh;
     grid-template-areas:
     'title'
     'image'
